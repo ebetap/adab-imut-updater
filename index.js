@@ -1,12 +1,29 @@
+/**
+ * A utility class for performing immutable updates on nested objects.
+ */
 class ImmutableUpdater {
+  /**
+   * Constructs an ImmutableUpdater instance.
+   * @param {Object} obj - The initial object to operate on.
+   */
   constructor(obj) {
     this.obj = obj;
   }
 
+  /**
+   * Checks if a given value is an object (excluding null).
+   * @param {*} value - The value to check.
+   * @returns {boolean} True if the value is an object, false otherwise.
+   */
   static isObject(value) {
     return value !== null && typeof value === 'object';
   }
 
+  /**
+   * Recursively clones an object or array.
+   * @param {*} value - The value to clone.
+   * @returns {*} The cloned value.
+   */
   static cloneDeep(value) {
     if (!ImmutableUpdater.isObject(value)) {
       return value;
@@ -21,6 +38,12 @@ class ImmutableUpdater {
     return clone;
   }
 
+  /**
+   * Parses a dot-separated path string into an array of keys.
+   * @param {string} path - The path string to parse.
+   * @returns {Array} An array of keys parsed from the path.
+   * @throws {Error} If path is not a non-empty string.
+   */
   static parsePath(path) {
     if (typeof path !== 'string' || path === '') {
       throw new Error('Path must be a non-empty string.');
@@ -30,6 +53,13 @@ class ImmutableUpdater {
     return path.match(regex) || [];
   }
 
+  /**
+   * Sets a value at a specified path in the object and returns a new ImmutableUpdater instance with the updated object.
+   * @param {string} path - The path where to set the value.
+   * @param {*} value - The value to set at the specified path.
+   * @returns {ImmutableUpdater} A new ImmutableUpdater instance with the updated object.
+   * @throws {Error} If path is not a non-empty string or if the path does not exist in the object.
+   */
   set(path, value) {
     if (typeof path !== 'string' || path === '') {
       throw new Error('Path must be a non-empty string.');
@@ -60,6 +90,12 @@ class ImmutableUpdater {
     return new ImmutableUpdater(newObject);
   }
 
+  /**
+   * Retrieves the value at a specified path in the object.
+   * @param {string} [path=''] - The path from where to retrieve the value.
+   * @returns {*} The value at the specified path, or undefined if the path does not exist.
+   * @throws {Error} If path is not a non-empty string.
+   */
   get(path = '') {
     if (typeof path !== 'string' || path === '') {
       throw new Error('Path must be a non-empty string.');
@@ -71,6 +107,12 @@ class ImmutableUpdater {
     }, this.obj);
   }
 
+  /**
+   * Deletes the property at a specified path in the object and returns a new ImmutableUpdater instance with the updated object.
+   * @param {string} path - The path of the property to delete.
+   * @returns {ImmutableUpdater} A new ImmutableUpdater instance with the updated object.
+   * @throws {Error} If path is not a non-empty string or if the path does not exist in the object.
+   */
   delete(path) {
     if (typeof path !== 'string' || path === '') {
       throw new Error('Path must be a non-empty string.');
@@ -98,6 +140,13 @@ class ImmutableUpdater {
     return new ImmutableUpdater(newObject);
   }
 
+  /**
+   * Merges an object into the property at a specified path in the object and returns a new ImmutableUpdater instance with the updated object.
+   * @param {string} path - The path where to merge the object.
+   * @param {Object} value - The object to merge at the specified path.
+   * @returns {ImmutableUpdater} A new ImmutableUpdater instance with the updated object.
+   * @throws {Error} If path is not a non-empty string, if the path does not exist in the object, or if value is not an object.
+   */
   merge(path, value) {
     if (typeof path !== 'string' || path === '') {
       throw new Error('Path must be a non-empty string.');
