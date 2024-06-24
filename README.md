@@ -1,149 +1,149 @@
-### `ImmutableUpdater` Class Documentation
+# ImmutableUpdater Documentation
 
-#### Overview
+The `ImmutableUpdater` class is a utility for performing immutable updates on nested objects. It allows for setting, getting, deleting, and merging values at specified paths within an object, ensuring that the original object remains unchanged.
 
-The `ImmutableUpdater` class provides methods to immutably update, retrieve, delete, and merge nested properties within an object. It ensures that operations do not mutate the original object and instead return new instances with the desired modifications.
+## Class: ImmutableUpdater
 
-#### Constructor
+### Constructor
 
-##### `new ImmutableUpdater(obj)`
+#### `constructor(obj)`
 
-- **Parameters:**
-  - `obj` (`Object`): The initial object to be managed immutably.
-
-- **Description:**
-  Initializes an instance of `ImmutableUpdater` with the specified object (`obj`).
-
-#### Static Methods
-
-##### `ImmutableUpdater.isObject(value)`
+Creates a new `ImmutableUpdater` instance.
 
 - **Parameters:**
-  - `value` (`any`): The value to check.
+  - `obj` (Object): The initial object to operate on.
 
+### Static Methods
+
+#### `static isObject(value)`
+
+Checks if a given value is an object (excluding null).
+
+- **Parameters:**
+  - `value` (*): The value to check.
 - **Returns:**
-  - `boolean`: `true` if `value` is a non-null object, otherwise `false`.
+  - `boolean`: True if the value is an object, false otherwise.
 
-- **Description:**
-  Checks if the provided `value` is a non-null object.
+#### `static cloneDeep(value)`
 
-##### `ImmutableUpdater.cloneDeep(value)`
-
-- **Parameters:**
-  - `value` (`any`): The value to deep clone.
-
-- **Returns:**
-  - `any`: A deep clone of the provided `value`.
-
-- **Description:**
-  Creates a deep copy of `value`, ensuring nested objects and arrays are also cloned recursively.
-
-##### `ImmutableUpdater.parsePath(path)`
+Recursively clones an object or array.
 
 - **Parameters:**
-  - `path` (`string`): The dot-separated path string.
-
+  - `value` (*): The value to clone.
 - **Returns:**
-  - `Array<string>`: An array of keys extracted from the path.
+  - `*`: The cloned value.
 
-- **Description:**
-  Parses the dot-separated `path` string into an array of individual keys.
+#### `static parsePath(path)`
 
-#### Instance Methods
-
-##### `set(path, value)`
+Parses a dot-separated path string into an array of keys.
 
 - **Parameters:**
-  - `path` (`string`): The dot-separated path where the value should be set.
-  - `value` (`any`): The value to set at the specified path.
-
+  - `path` (string): The path string to parse.
 - **Returns:**
-  - `ImmutableUpdater`: A new instance of `ImmutableUpdater` with the updated object.
-
-- **Description:**
-  Sets the `value` at the specified `path` within the object. If the path doesn't exist, it creates nested objects or arrays as necessary.
-
+  - `Array`: An array of keys parsed from the path.
 - **Throws:**
-  - `Error`: If `path` is not a non-empty string.
+  - `Error`: If the path is not a non-empty string.
 
-##### `get(path = null)`
+### Instance Methods
 
-- **Parameters:**
-  - `path` (`string`, optional): The dot-separated path of the property to retrieve. If not provided, returns the entire object.
+#### `set(path, value)`
 
-- **Returns:**
-  - `any`: The value found at the specified path within the object, or the entire object if `path` is not specified.
-
-- **Description:**
-  Retrieves the value at the specified `path` within the object. Returns `undefined` if the path doesn't exist.
-
-##### `delete(path)`
+Sets a value at a specified path in the object and returns a new `ImmutableUpdater` instance with the updated object.
 
 - **Parameters:**
-  - `path` (`string`): The dot-separated path of the property to delete.
-
+  - `path` (string): The path where to set the value.
+  - `value` (*): The value to set at the specified path.
 - **Returns:**
-  - `ImmutableUpdater`: A new instance of `ImmutableUpdater` with the modified object after deletion.
-
-- **Description:**
-  Deletes the property at the specified `path` within the object. Returns a new object without mutating the original.
-
+  - `ImmutableUpdater`: A new `ImmutableUpdater` instance with the updated object.
 - **Throws:**
-  - `Error`: If `path` is not a non-empty string.
+  - `Error`: If the path is not a non-empty string or if the path does not exist in the object.
 
-##### `merge(path, value)`
+#### `get(path = '')`
+
+Retrieves the value at a specified path in the object.
 
 - **Parameters:**
-  - `path` (`string`): The dot-separated path where the object `value` should be merged.
-  - `value` (`Object`): The object to merge into the specified path.
-
+  - `path` (string, optional): The path from where to retrieve the value.
 - **Returns:**
-  - `ImmutableUpdater`: A new instance of `ImmutableUpdater` with the merged object.
-
-- **Description:**
-  Merges the `value` object into the specified `path` within the object. Creates nested objects as necessary.
-
+  - `*`: The value at the specified path, or undefined if the path does not exist.
 - **Throws:**
-  - `Error`: If `path` is not a non-empty string or `value` is not an object.
+  - `Error`: If the path is not a non-empty string.
 
-#### Error Handling
+#### `delete(path)`
 
-- All methods that require a `path` parameter throw an `Error` if the `path` is not a non-empty string.
-- The `merge` method throws an `Error` if the `value` to merge is not an object.
+Deletes the property at a specified path in the object and returns a new `ImmutableUpdater` instance with the updated object.
 
-### Example Usage
+- **Parameters:**
+  - `path` (string): The path of the property to delete.
+- **Returns:**
+  - `ImmutableUpdater`: A new `ImmutableUpdater` instance with the updated object.
+- **Throws:**
+  - `Error`: If the path is not a non-empty string or if the path does not exist in the object.
+
+#### `merge(path, value)`
+
+Merges an object into the property at a specified path in the object and returns a new `ImmutableUpdater` instance with the updated object.
+
+- **Parameters:**
+  - `path` (string): The path where to merge the object.
+  - `value` (Object): The object to merge at the specified path.
+- **Returns:**
+  - `ImmutableUpdater`: A new `ImmutableUpdater` instance with the updated object.
+- **Throws:**
+  - `Error`: If the path is not a non-empty string, if the path does not exist in the object, or if value is not an object.
+
+## How to Use
+
+### Initialization
+
+To use the `ImmutableUpdater`, create an instance with the initial object:
 
 ```javascript
-// Create an instance of ImmutableUpdater with an initial object
-const initialObject = {
-  user: {
-    name: "John",
-    details: {
-      age: 30,
-      address: {
-        city: "New York"
-      }
-    }
-  }
-};
+const initialObject = { a: { b: { c: 42 } } };
 const updater = new ImmutableUpdater(initialObject);
-
-// Example: Updating a nested property
-const updatedUser = updater.set("user.details.age", 31).get();
-console.log(updatedUser);
-// Output: { user: { name: "John", details: { age: 31, address: { city: "New York" } } } }
-
-// Example: Deleting a nested property
-const deletedUser = updater.delete("user.details.address").get();
-console.log(deletedUser);
-// Output: { user: { name: "John", details: { age: 30 } } }
-
-// Example: Merging an object into a nested property
-const mergedUser = updater.merge("user.details", { email: "john@example.com" }).get();
-console.log(mergedUser);
-// Output: { user: { name: "John", details: { age: 30, email: "john@example.com" } } }
 ```
 
-### Conclusion
+### Setting a Value
 
-The `ImmutableUpdater` class provides a robust solution for managing immutable updates to nested objects. It ensures clarity and safety by maintaining immutability and providing comprehensive error handling. By using this class, developers can effectively manage and manipulate complex nested data structures while adhering to immutability principles.
+To set a value at a specified path:
+
+```javascript
+const updated = updater.set('a.b.c', 100);
+console.log(updated.obj); // { a: { b: { c: 100 } } }
+```
+
+### Getting a Value
+
+To get a value from a specified path:
+
+```javascript
+const value = updater.get('a.b.c');
+console.log(value); // 42
+```
+
+### Deleting a Property
+
+To delete a property at a specified path:
+
+```javascript
+const updated = updater.delete('a.b.c');
+console.log(updated.obj); // { a: { b: {} } }
+```
+
+### Merging an Object
+
+To merge an object into the property at a specified path:
+
+```javascript
+const updated = updater.merge('a.b', { d: 50 });
+console.log(updated.obj); // { a: { b: { c: 42, d: 50 } } }
+```
+
+## Error Handling
+
+The methods in `ImmutableUpdater` will throw errors under certain conditions:
+- If the path is not a non-empty string.
+- If the specified path does not exist in the object.
+- If the value to merge is not an object.
+
+Make sure to handle these errors appropriately in your application.
