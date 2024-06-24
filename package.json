@@ -1,0 +1,15 @@
+{
+  "name": "adab-imut-updater",
+  "version": "1.0.0",
+  "description": "A utility class for immutably updating nested objects in JavaScript.",
+  "main": "index.js",
+  "keywords": [
+    "immutable",
+    "update",
+    "nested",
+    "objects",
+    "javascript"
+  ],
+  "author": "Beta 'Muhammad' Priyoko <beta.priyoko@students.amikom.ac.id>",
+  "license": "MIT"
+}
